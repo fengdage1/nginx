@@ -1,11 +1,10 @@
-#以下是虚拟主机 app.vhost 的内容
+#以下是虚拟主机 vhost 的内容
 server {
 	listen 80;
-	server_name admin.anzhuo.com;
-	#root /usr/share/nginx/html/sj/admin.sj.anzhuo.com/Manage/Public;	
-	root /usr/share/nginx/html/app/Manage/Public;
-	if ($http_host != "admin.anzhuo.com") {
-		rewrite ^ http://admin.anzhuo.com$request_uri permanent;
+	server_name www.localtest.com;
+	root /usr/share/nginx/html/mytest/think/public;
+	if ($http_host != "www.localtest.com") {
+		rewrite ^ http://www.localtest.com$request_uri permanent;
 	}
 	index index.php index.html index.htm;
 	location / {
@@ -21,8 +20,8 @@ server {
 		root /usr/share/nginx/html;
 	}
 	location ~ .+\.php($|/) {
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index;
+		fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+		fastcgi_index index.php;
 		include fastcgi_params;
 #设置PATH_INFO并改写SCRIPT_FILENAME,SCRIPT_NAME服务器环境变量
 		set $fastcgi_script_name2 $fastcgi_script_name;
