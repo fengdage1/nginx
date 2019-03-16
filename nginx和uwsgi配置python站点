@@ -1,0 +1,74 @@
+nginx
+
+server {
+       listen       80;
+        server_name  www.fenggefengge.com;
+  
+      #charset koi8-r;
+ 
+        #access_log  logs/host.access.log  main;
+
+       location / {
+             include uwsgi_params;
+             uwsgi_pass 127.0.0.1:8001;
+            uwsgi_param UWSGI_CHDIR /var/code/python/flasktest;
+             uwsgi_param UWSGI_SCRIPT wsgi;
+        }
+         location /static/{
+             root html;
+       }
+       #error_page  404              /404.html;
+
+       # redirect server error pages to the static page /50x.html
+        #
+         error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+             root   html;
+        }
+  }
+  
+  server {
+       listen       80;
+        server_name  admin.fenggefengge.com;
+  
+      #charset koi8-r;
+ 
+        #access_log  logs/host.access.log  main;
+
+       location / {
+             include uwsgi_params;
+             uwsgi_pass 127.0.0.1:8001;
+            uwsgi_param UWSGI_CHDIR /var/code/python/flasktest2;
+             uwsgi_param UWSGI_SCRIPT wsgi;
+        }
+         location /static/{
+             root html;
+       }
+       #error_page  404              /404.html;
+
+       # redirect server error pages to the static page /50x.html
+        #
+         error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+             root   html;
+        }
+  }
+
+
+
+
+
+
+uwsgi配置
+[uwsgi]
+   vhost = true
+  master = true
+  processes = 5
+  socket = 127.0.0.1:8001
+  chomd-socket = 600
+  vacuum = true
+  die-on-term = true
+  pidfile=/root/uwsgi/uwsgi.pid
+ daemonize=/root/uwsgi/uwsgi.log
+
+
